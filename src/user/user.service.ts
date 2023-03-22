@@ -4,24 +4,24 @@ import { Model } from 'mongoose'
 import { RegisterDto } from './dtos/register.dto'
 import { User, UserDocument } from './schemas/user.schema'
 import * as CryptoJS from 'crypto-js'
+import { create } from 'domain'
 
 @Injectable()
 export class UserService {
-    constructor{@InjectModel(User.name) private readonly userModel: Model<UserDocument>}{};
+ constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-    async create(dto: RegisterDto){dto.password = CryptoJS.AES.encrypt(dto.password, process.env.USER_CYPHER_SECRET_KEY).tooString();
+ async create(dto: RegisterDto): Promise<User> {
+  dto.password = CryptoJS.AES.encrypt(dto.password, process.env.USER_CYPHER_SECRET_KEY).toString();
 
-        const createdUser = new this.userModel(dto);
-        await createdUser.save();
-    }
+  const createdUser = new this.userModel(dto);
+  return createdUser.save();
+ }
 
-    async existsByEmail( email : String) : Promise<boolean> {
-        const result = await this.userModel.findOne({email});
-
-        if(result){
-            return true;
-        }
-
-        return false;
-    }
+ async existsByEmail(email: String) : Promise<boolean>{
+  const result = await this.userModel.findOne({email});
+  if(result){
+    return true;
+  }
+  return false;
+ }
 }

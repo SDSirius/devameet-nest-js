@@ -4,7 +4,7 @@ import { Model } from 'mongoose'
 import { RegisterDto } from './dtos/register.dto'
 import { User, UserDocument } from './schemas/user.schema'
 import * as CryptoJS from 'crypto-js'
-import { create } from 'domain'
+
 
 @Injectable()
 export class UserService {
@@ -38,5 +38,9 @@ export class UserService {
   }
 
   return null;
+ }
+
+ async getUserById(id:string){
+  return await this.userModel.findById(id);
  }
 }

@@ -5,6 +5,7 @@ import { Server, Socket } from 'socket.io';
 import { JoinRoomDto } from './dtos/joinroom.dto';
 import { UpdateUserPositionDto } from './dtos/updateposition.dto';
 import { ToglMuteDto } from './dtos/toglMute.dto';
+import { SavingPosition } from './room.service';
 
 type ActiveSocketType = {
   room:String; 
@@ -37,6 +38,15 @@ export class RoomGateway implements OnGatewayInit, OnGatewayDisconnect {
     this.activeSockets = this.activeSockets.filter(
       socket => socket.id !== client.id
     );
+
+    const savingPosition = await SavingPosition{
+      link,
+      x,
+      y,
+      orientation
+    };
+
+    this.create()
 
     await this.service.deleteUserPosition(client.id);
 

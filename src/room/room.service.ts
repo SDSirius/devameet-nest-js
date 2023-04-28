@@ -19,7 +19,7 @@ export class RoomService {
         @InjectModel(Position.name) private readonly positionModel : Model<PositionDocument>,
         private readonly userService:UserService
     ){}
-
+    
     async getRoom(link: string){
         this.logger.debug(`getRoom - ${link}`);
 
@@ -90,4 +90,16 @@ export class RoomService {
         }
         return meet;
     }
+}
+
+export function SavingPosition(link:string, dto: UpdateUserPositionDto){
+    this.logger.debug(`SavingUserPositionOnLink - ${link}`);
+
+    const savedPosition = {
+        link,
+        x:Number,
+        y:Number,
+        orientation:String
+    }
+    return {savedPosition};
 }

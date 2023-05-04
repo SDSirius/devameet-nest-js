@@ -12,6 +12,11 @@ type ActiveSocketType = {
   userId:String;
 }
 
+async function LoadHistory(userId:string) {
+  
+  
+}
+
 @WebSocketGateway({cors: true})
 export class RoomGateway implements OnGatewayInit, OnGatewayDisconnect {
 
@@ -20,11 +25,10 @@ export class RoomGateway implements OnGatewayInit, OnGatewayDisconnect {
   @WebSocketServer() wss: Server;
 
   private logger = new Logger(RoomGateway.name);
-  private activeSockets: ActiveSocketType[]= [];
-
-  
+  private activeSockets: ActiveSocketType[]= []; // source de informações da room REQUIRED
+    
   afterInit(server: any) {
-    this.logger.log('Gateway initialized')
+    this.logger.log('Gateway initialized'); // Carregar o histórico de todas as rooms que o usuario entrou
   }
 
   async handleDisconnect(client: any) {
@@ -49,20 +53,27 @@ export class RoomGateway implements OnGatewayInit, OnGatewayDisconnect {
   async handleJoin(client:Socket, payload:JoinRoomDto){
     const {link, userId}= payload;
 
+    const standardPosition = {
+      link,
+      userId,
+      x:2,
+      y:2,
+      orientation:'down'
+    }
+    
+
     const existingOnSockets = this.activeSockets.find(
       socket => socket.room === link && socket.id === client.id);
     
       if(!existingOnSockets){
         this.activeSockets.push({room:link, id:client.id, userId});
-
-        const dto = {
-          link,
-          userId,
-          x:2,
-          y:2,
-          orientation:'down'
-        } as UpdateUserPositionDto
-
+        let dto;
+        //fazer o check se existe registro, se tiver, substituir os dados com da tabela abaixo
+        if (!history || history == null){
+          dto = standardPosition as UpdateUserPositionDto;
+        }else{
+           dto = history;
+        }
         await this.service.updateUserPosition(client.id, dto);
         const users = await this.service.listUserPositionByLink(link);
         this.wss.emit(`${link}-update-user-list`,{users});
@@ -82,6 +93,10 @@ export class RoomGateway implements OnGatewayInit, OnGatewayDisconnect {
         y,
         orientation
       } as UpdateUserPositionDto
+      
+      // possivelmente isso me retorna os valores totais que eu preciso, posição atualizada
+      // posso tentar usar isso pra criar um array e antes do disconnect salvar num objeto o
+      // history[-1] que recebe esse Dto pra criar o ponto de entrada
 
       await this.service.updateUserPosition(client.id, dto);
       const users = await this.service.listUserPositionByLink(link);

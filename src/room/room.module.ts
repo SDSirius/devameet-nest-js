@@ -11,7 +11,7 @@ import { RoomGateway } from './room.gateway';
   imports:[
     MeetModule, UserModule,
     MongooseModule.forFeature([
-      {name: Position.name, schema: PositionSchema}
+      { name: Position.name, schema: PositionSchema}
     ])
   ],
   providers: [RoomService, RoomGateway],

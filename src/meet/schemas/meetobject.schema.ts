@@ -1,29 +1,29 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
-import { Meet } from "./meet.schemas";
+import { Meet } from "./meet.schema";
 
 export type MeetObjectDocument = HydratedDocument<MeetObject>;
 
 @Schema()
 export class MeetObject{
 
-    @Prop({type:mongoose.Schema.Types.ObjectId,ref: Meet.name})
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: Meet.name})
     meet: Meet;
 
     @Prop({required:true})
-    name:string;
+    name: string;
 
     @Prop({required:true})
-    x:number;
+    x: number;
 
     @Prop({required:true})
-    y:number;
+    y: number;
 
     @Prop({required:true})
-    zIndex:number;
+    zIndex: number;
 
     @Prop()
-    orientation:string;
+    orientation: string;
 }
 
 export const MeetObjectSchema = SchemaFactory.createForClass(MeetObject);

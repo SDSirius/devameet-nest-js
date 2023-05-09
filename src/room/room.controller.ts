@@ -3,11 +3,11 @@ import { RoomService } from './room.service';
 
 @Controller('room')
 export class RoomController {
-    constructor(private readonly roomService : RoomService){}
+    constructor(private readonly roomService: RoomService){}
 
-    @Get(`:link`)
+    @Get(':link')
     async getRoom(@Param() params){
         const {link} = params;
-        return this.roomService.getRoom(link);
+        return await this.roomService.getRoom(link);
     }
 }

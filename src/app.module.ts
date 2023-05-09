@@ -15,7 +15,12 @@ import { RoomModule } from './room/room.module';
     AuthModule,
     UserModule,
     MeetModule,
+<<<<<<< Updated upstream
     RoomModule],
+=======
+    RoomModule
+  ],
+>>>>>>> Stashed changes
   controllers: [],
   providers: [
     {provide: APP_GUARD, useClass: JwtAuthGuard}

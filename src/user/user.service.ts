@@ -5,8 +5,8 @@ import { RegisterDto } from './dtos/register.dto'
 import { User, UserDocument } from './schemas/user.schema'
 import * as CryptoJS from 'crypto-js'
 import { UpdateUsertDto } from './dtos/updateuser.dto'
-import { HistoryDto } from './dtos/history.dto'
-import { HistoryDocument } from './schemas/history.schema'
+import { History, HistoryDocument } from 'src/history/schema/history.schema'
+import { HistoryService } from 'src/history/history.service'
 
 type LoadHistory = {
   userId:String; 
@@ -20,7 +20,7 @@ type LoadHistory = {
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    // @InjectModel(History.name) private HistoryModel: Model<HistoryDocument>
+    @InjectModel(History.name) private HistoryModel: Model<HistoryDocument>,
   ) {}
   
 
@@ -56,10 +56,6 @@ async existsByEmail(email: String) : Promise<boolean>{
 
  async getUserById(id:string){
   return await this.userModel.findById(id);
- }
-
- async getHistory(){
-
  }
 
  async updateUser(id:string, dto: UpdateUsertDto){

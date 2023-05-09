@@ -7,6 +7,7 @@ import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { UserModule } from './user/user.module';
 import { MeetModule } from './meet/meet.module';
 import { RoomModule } from './room/room.module';
+import { HistoryModule } from './history/history.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { RoomModule } from './room/room.module';
     AuthModule,
     UserModule,
     MeetModule,
-    RoomModule],
+    RoomModule,
+    HistoryModule],
   controllers: [],
   providers: [
     {provide: APP_GUARD, useClass: JwtAuthGuard}

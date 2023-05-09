@@ -8,6 +8,8 @@ import { UserService } from 'src/user/user.service';
 import { RoomMessagesHelper } from './helper/roommessages.helper';
 import { UpdateUserPositionDto } from './dtos/updateposition.dto';
 import { ToglMuteDto } from './dtos/toglMute.dto';
+import { HistoryService } from 'src/history/history.service';
+import { HistoryDocument } from 'src/history/schema/history.schema';
 
 @Injectable()
 export class RoomService {
@@ -17,7 +19,7 @@ export class RoomService {
         @InjectModel(Meet.name) private readonly meetModel : Model<MeetDocument>,
         @InjectModel(MeetObject.name) private readonly objectModel : Model<MeetObjectDocument>,
         @InjectModel(Position.name) private readonly positionModel : Model<PositionDocument>,
-        private readonly userService:UserService
+        private readonly userService:UserService,
     ){}
 
     async getRoom(link: string){
@@ -25,7 +27,7 @@ export class RoomService {
 
         const meet = await this._getMeet(link);
         const objects = await this.objectModel.find({meet});
-
+        
             return {
                 link, 
                 name: meet.name,
@@ -90,4 +92,6 @@ export class RoomService {
         }
         return meet;
     }
+
+    
 }

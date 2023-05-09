@@ -3,15 +3,20 @@ import { BadRequestException } from '@nestjs/common/exceptions';
 import { UserMessagesHelper } from './helpers/messages.helper';
 import { UserService } from './user.service'
 import { UpdateUsertDto } from './dtos/updateuser.dto'
+import { HistoryService } from 'src/history/history.service';
 
 @Controller('user')
 export class UserController{
-    constructor(private readonly userService: UserService){}
+    constructor(
+        private readonly userService: UserService,
+        private readonly historyService: HistoryService,
+        ){}
 
     @Get()
     async getUser(@Request() req){
         const {userId} = req?.user;
         const user = await this.userService.getUserById(userId);
+        const LoadHistory = await this.historyService.getHistoryByUserId(userId);
 
         if(!user){
             throw new BadRequestException(UserMessagesHelper.GET_USER_NOT_FOUND);

@@ -5,17 +5,20 @@ export type HistoryDocument = HydratedDocument<History>;
 
 @Schema()
 export class History{
-    @Prop({eequired: true})
-    name:string;
+    @Prop({required: true})
+    userId:string;
 
-    @Prop({eequired: true})
-    email:string;
+    @Prop({required: true})
+    link:string;
 
-    @Prop({eequired: true})
-    password:string;
+    @Prop({required: true})
+    x:number;
+    
+    @Prop({required: true})
+    y:number;
 
-    @Prop()
-    avatar:string;
+    @Prop({required: true})
+    orientation:string;
 }
 
 export const HistorySchema = SchemaFactory.createForClass(History);

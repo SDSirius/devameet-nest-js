@@ -6,9 +6,7 @@ import { MeetService } from './meet.service';
 
 @Controller('meet')
 export class MeetController {
-    constructor(
-        private readonly service:MeetService
-    ){}
+    constructor( private readonly service:MeetService ){}
     
     @Get()
     async getUser(@Request() req){
